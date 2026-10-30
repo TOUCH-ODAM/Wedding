@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#F7F4EE" />
+<title>ODAM &amp; PHORN — Wedding Invitation</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Battambang:wght@400;700&family=Moul&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ============================================================
+     TAP TO ENTER (unlocks audio → intro plays WITH SOUND)
+     ============================================================ -->
+<div id="enterScreen">
+  <div class="enter-inner">
+    <div class="enter-eyebrow">The Wedding Of</div>
+    <div class="enter-names">Odam <em>&amp;</em> Phorn</div>
+    <div class="enter-rule"></div>
+    <p class="enter-khmer">សិរីមង្គល · អាពាហ៍ពិពាហ៍</p>
+
+    <button id="enterBtn" class="enter-btn" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+           stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 18V5l12-2v13"/>
+        <circle cx="6" cy="18" r="3"/>
+        <circle cx="18" cy="16" r="3"/>
+      </svg>
+      <span>បើកអញ្ជើញ · Open Invitation</span>
+    </button>
+
+    <p class="enter-note">Tap to enable sound</p>
+  </div>
+</div>
+
+<!-- ============================================================
+     INTRO VIDEO — will play WITH SOUND after tap
+     ============================================================ -->
+<section id="intro" aria-label="Intro video">
+  <div class="intro-frame">
+    <video id="introVideo" playsinline muted preload="auto" poster="DP5.JPG">
+      <source src="Wedding1.mp4" type="video/mp4" />
+    </video>
+  </div>
+
+  <div class="intro-veil"></div>
+
+  <div class="intro-frame-lines" aria-hidden="true">
+    <span></span><span></span><span></span><span></span>
+  </div>
+
+  <div class="intro-content">
+    <div class="intro-eyebrow">The Wedding Of</div>
+    <div class="intro-names">Odam <em>&amp;</em> Phorn</div>
+    <div class="intro-rule"></div>
+    <div class="intro-sub">សិរីមង្គល · អាពាហ៍ពិពាហ៍</div>
+    <div class="intro-date">30 · 02 · 2029</div>
+  </div>
+
+  <div class="intro-controls">
+    <button class="ghost-btn on" id="introSound" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+      </svg>
+      <span>Sound on</span>
+    </button>
+
+    <button class="ghost-btn" id="skipIntro" type="button">
+      <span>Skip intro</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="intro-bar"><span id="introProgress"></span></div>
+</section>
+
+<div id="progress"></div>
+
+<audio id="bgMusic" loop preload="auto">
+  <source src="https://media.leangna.online/audio/nisai.mp3" type="audio/mpeg" />
+</audio>
+
+<button id="audioToggle" aria-label="Music toggle">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+    <path d="M15.54 8.46a5 5 0 0 1 0 7.07" class="wave1"/>
+    <path d="M19.07 4.93a10 10 0 0 1 0 14.14" class="wave2"/>
+  </svg>
+</button>
+
+<!-- ============================================================
+     COVER
+     ============================================================ -->
+<section id="cover">
+  <div class="cover-image" style="background-image:url('DP5.JPG')"></div>
+  <div class="cover-shade"></div>
+
+  <div class="cover-content">
+    <div class="cover-top">
+      <span>Invitation</span>
+      <span class="cover-est">Est. 2029</span>
+    </div>
+
+    <div class="cover-main">
+      <h1 class="cover-names">
+        <span>ODAM</span>
+        <span>&amp;</span>
+        <span>PHORN</span>
+      </h1>
+
+      <div class="cover-meta">
+        <span>30 · 02 · 2029</span>
+        <span class="cover-dot">✦</span>
+        <span>Phnom Penh</span>
+      </div>
+
+      <p class="cover-khmer">សិរីមង្គល · អាពាហ៍ពិពាហ៍</p>
+    </div>
+
+    <div class="cover-bottom">
+      <button class="open-btn" id="openBtn" type="button">
+        <span>បើកសំបុត្រ</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SITE
+     ============================================================ -->
+<div id="site">
+
+  <!-- HERO -->
+  <section id="home">
+    <span class="side-label left" aria-hidden="true">Est. 2029</span>
+    <span class="side-label right" aria-hidden="true">Phnom Penh</span>
+
+    <div class="wrap hero-wrap">
+      <div class="hero-eyebrow">
+        <span class="hero-eyebrow-line"></span>
+        We're Getting Married
+        <span class="hero-eyebrow-line"></span>
+      </div>
+
+      <h1 class="hero-title">
+        <span>Odam</span>
+        <span class="hero-amp">&amp;</span>
+        <span>Phorn</span>
+      </h1>
+
+      <p class="hero-khmer">សិរីមង្គល អាពាហ៍ពិពាហ៍</p>
+      <p class="hero-date">Saturday · 30 · 02 · 2029</p>
+
+      <div class="countdown">
+        <div class="cd"><div class="cd-num" id="cdD">--</div><div class="cd-lbl">Days</div></div>
+        <div class="cd"><div class="cd-num" id="cdH">--</div><div class="cd-lbl">Hours</div></div>
+        <div class="cd"><div class="cd-num" id="cdM">--</div><div class="cd-lbl">Minutes</div></div>
+        <div class="cd"><div class="cd-num" id="cdS">--</div><div class="cd-lbl">Seconds</div></div>
+      </div>
+
+      <p class="hero-invite">សូមគោរពអញ្ជើញភ្ញៀវកិត្តិយស</p>
+    </div>
+
+    <div class="hero-scroll" aria-hidden="true">
+      <span>Scroll</span>
+      <span class="hero-scroll-line"></span>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>The Wedding of Odam &amp; Phorn</span>
+      <span class="marquee-dot">✦</span>
+      <span>30 · 02 · 2029</span>
+      <span class="marquee-dot">✦</span>
+      <span>Phnom Penh</span>
+      <span class="marquee-dot">✦</span>
+      <span>សិរីមង្គល អាពាហ៍ពិពាហ៍</span>
+      <span class="marquee-dot">✦</span>
+
+      <span>The Wedding of Odam &amp; Phorn</span>
+      <span class="marquee-dot">✦</span>
+      <span>30 · 02 · 2029</span>
+      <span class="marquee-dot">✦</span>
+      <span>Phnom Penh</span>
+      <span class="marquee-dot">✦</span>
+      <span>សិរីមង្គល អាពាហ៍ពិពាហ៍</span>
+      <span class="marquee-dot">✦</span>
+    </div>
+  </div>
+
+  <!-- INVITATION -->
+  <section id="invitation">
+    <div class="wrap">
+      <header class="sec-head reveal">
+        <div class="sec-meta">
+          <span class="sec-num">01</span>
+          <span class="sec-line"></span>
+          <span class="sec-eyebrow">Invitation</span>
+        </div>
+        <h2 class="sec-title">សេចក្តីគោរពអញ្ជើញ</h2>
+      </header>
+
+      <div class="card reveal">
+        <p class="card-khmer-title">សិរីមង្គល អាពាហ៍ពិពាហ៍</p>
+        <p class="card-text">យើងខ្ញុំមានកិត្តិយសសូមគោរពអញ្ជើញ</p>
+
+        <div class="guest-pill" id="guestName">ភ្ញៀវកិត្តិយស</div>
+
+        <p class="card-text">ចូលរួមជាភ្ញៀវកិត្តិយសក្នុងពិធីអាពាហ៍ពិពាហ៍របស់យើងខ្ញុំ</p>
+
+        <p class="card-names">Touch Odam <em>&amp;</em> Phoey Phorn</p>
+
+        <p class="card-text">
+          ថ្ងៃសៅរ៍ ទី ៣០ ខែ កុម្ភៈ ឆ្នាំ ២០២៩<br>
+          វេលាម៉ោង ៥:០០ ល្ងាច
+        </p>
+
+        <p class="card-cta">វត្តមានរបស់លោក/លោកស្រី គឺជាកិត្តិយសដ៏ខ្ពង់ខ្ពស់</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- COUPLE -->
+  <section id="couple">
+    <div class="wrap">
+      <header class="sec-head reveal">
+        <div class="sec-meta">
+          <span class="sec-num">02</span>
+          <span class="sec-line"></span>
+          <span class="sec-eyebrow">The Couple</span>
+        </div>
+        <h2 class="sec-title">កូនកំលោះ &amp; កូនក្រមុំ</h2>
+      </header>
+
+      <div class="couple-list">
+        <article class="person reveal">
+          <div class="person-media">
+            <img src="DP2.PNG" alt="កូនកំលោះ" />
+            <span class="person-index">01</span>
+          </div>
+          <div class="person-info">
+            <span class="person-role">The Groom</span>
+            <h3 class="person-name">ទូច ឧត្តម</h3>
+            <div class="person-en">Touch Odam</div>
+            <p class="person-parents">ជាកូនប្រុសរបស់<br>លោក ____ និង លោកស្រី ____</p>
+          </div>
+        </article>
+
+        <article class="person reverse reveal">
+          <div class="person-media">
+            <img src="DP3.JPG" alt="កូនក្រមុំ" />
+            <span class="person-index">02</span>
+          </div>
+          <div class="person-info">
+            <span class="person-role">The Bride</span>
+            <h3 class="person-name">ភឺន ផន</h3>
+            <div class="person-en">Phoey Phorn</div>
+            <p class="person-parents">ជាកូនស្រីរបស់<br>លោក ____ និង លោកស្រី ____</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCHEDULE -->
+  <section id="schedule">
+    <div class="wrap">
+      <header class="sec-head reveal">
+        <div class="sec-meta">
+          <span class="sec-num">03</span>
+          <span class="sec-line"></span>
+          <span class="sec-eyebrow">Schedule</span>
+        </div>
+        <h2 class="sec-title">កម្មវិធីប្រារព្ធពិធី</h2>
+      </header>
+
+      <div class="schedule">
+        <article class="sch-item reveal">
+          <div class="sch-num">01</div>
+          <div class="sch-content">
+            <div class="sch-date-line">
+              <span class="sch-day">30</span>
+              <span class="sch-month">Feb</span>
+              <span class="sch-sep">·</span>
+              <span class="sch-time">04:00 PM</span>
+            </div>
+            <h3 class="sch-title">ពិធីសែនជ័យ</h3>
+            <p class="sch-desc">នៅផ្ទះកូនក្រមុំ</p>
+          </div>
+        </article>
+
+        <article class="sch-item reveal">
+          <div class="sch-num">02</div>
+          <div class="sch-content">
+            <div class="sch-date-line">
+              <span class="sch-day">31</span>
+              <span class="sch-month">Feb</span>
+              <span class="sch-sep">·</span>
+              <span class="sch-time">08:00 AM</span>
+            </div>
+            <h3 class="sch-title">ពិធីហែជំនួន</h3>
+            <p class="sch-desc">ដង្ហែកូនកំលោះទៅផ្ទះកូនក្រមុំ</p>
+          </div>
+        </article>
+
+        <article class="sch-item reveal">
+          <div class="sch-num">03</div>
+          <div class="sch-content">
+            <div class="sch-date-line">
+              <span class="sch-day">32</span>
+              <span class="sch-month">Feb</span>
+              <span class="sch-sep">·</span>
+              <span class="sch-time">05:00 PM</span>
+            </div>
+            <h3 class="sch-title">ពិធីអាពាហ៍ពិពាហ៍</h3>
+            <p class="sch-desc">ពិធីមង្គលការផ្លូវការ</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery">
+    <div class="wrap">
+      <header class="sec-head reveal">
+        <div class="sec-meta">
+          <span class="sec-num">04</span>
+          <span class="sec-line"></span>
+          <span class="sec-eyebrow">Gallery</span>
+        </div>
+        <h2 class="sec-title">រូបភាព</h2>
+      </header>
+
+      <div class="gallery reveal" id="galleryGrid">
+        <figure class="gallery-item">
+          <img src="DP1.JPG" alt="gallery 1" loading="lazy" />
+          <figcaption>01</figcaption>
+        </figure>
+        <figure class="gallery-item">
+          <img src="DP2.PNG" alt="gallery 2" loading="lazy" />
+          <figcaption>02</figcaption>
+        </figure>
+        <figure class="gallery-item">
+          <img src="DP3.JPG" alt="gallery 3" loading="lazy" />
+          <figcaption>03</figcaption>
+        </figure>
+        <figure class="gallery-item">
+          <img src="DP4.JPG" alt="gallery 4" loading="lazy" />
+          <figcaption>04</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCATION -->
+  <section id="location">
+    <div class="wrap">
+      <header class="sec-head reveal">
+        <div class="sec-meta">
+          <span class="sec-num">05</span>
+          <span class="sec-line"></span>
+          <span class="sec-eyebrow">Location</span>
+        </div>
+        <h2 class="sec-title">ទីតាំងពិធី</h2>
+      </header>
+
+      <div class="location-card reveal">
+        <div class="loc-tag">The Venue</div>
+        <h3 class="loc-name">មជ្ឈមណ្ឌលសន្និសីទ ភ្នំពេញ</h3>
+        <p class="loc-addr">ផ្លូវសុធារស · រាជធានីភ្នំពេញ</p>
+        <a class="btn-outline" href="https://maps.app.goo.gl/pVzjF5GjgRZCWheq5?g_st=it" target="_blank" rel="noopener">
+          <span>Open in Google Maps</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 17L17 7M17 7H8M17 7v9"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- RSVP -->
+  <section id="rsvp">
+    <div class="wrap">
+      <header class="sec-head reveal">
+        <div class="sec-meta">
+          <span class="sec-num">06</span>
+          <span class="sec-line"></span>
+          <span class="sec-eyebrow">RSVP</span>
+        </div>
+        <h2 class="sec-title">បញ្ជាក់វត្តមាន</h2>
+      </header>
+
+      <div class="card reveal">
+        <form id="rsvpForm" class="form">
+          <div class="field-group">
+            <label class="field-label">ឈ្មោះ</label>
+            <input class="field" name="name" placeholder="ឈ្មោះរបស់អ្នក" required />
+          </div>
+          <div class="field-group">
+            <label class="field-label">វត្តមាន</label>
+            <select class="field" name="attend" required>
+              <option value="">— សូមជ្រើសរើស —</option>
+              <option value="yes">ខ្ញុំនឹងអញ្ជើញមក</option>
+              <option value="no">ខ្ញុំមិនអាចមកបាន</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label class="field-label">ចំនួនភ្ញៀវ</label>
+            <input class="field" name="guests" type="number" min="1" max="10" value="1" />
+          </div>
+          <div class="field-group">
+            <label class="field-label">សារបន្ថែម</label>
+            <textarea class="field" name="msg" placeholder="សារជូនកូនកំលោះកូនក្រមុំ (ស្រេចចិត្ត)"></textarea>
+          </div>
+          <button class="btn" type="submit">ផ្ញើការបញ្ជាក់</button>
+        </form>
+        <p class="tg-note">ឬទាក់ទងតាម Telegram <strong>@yourusername</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WISHES -->
+  <section id="wishes">
+    <div class="wrap">
+      <header class="sec-head reveal">
+        <div class="sec-meta">
+          <span class="sec-num">07</span>
+          <span class="sec-line"></span>
+          <span class="sec-eyebrow">Wishes</span>
+        </div>
+        <h2 class="sec-title">ពាក្យជូនពរ</h2>
+      </header>
+
+      <div class="card reveal">
+        <form id="wishForm" class="form">
+          <div class="field-group">
+            <label class="field-label">ឈ្មោះ</label>
+            <input class="field" name="name" placeholder="ឈ្មោះរបស់អ្នក" required />
+          </div>
+          <div class="field-group">
+            <label class="field-label">សារជូនពរ</label>
+            <textarea class="field" name="text" placeholder="សរសេរពាក្យជូនពរ..." required></textarea>
+          </div>
+          <button class="btn" type="submit">ផ្ញើពាក្យជូនពរ</button>
+        </form>
+        <div class="wish-list" id="wishList"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot-mark">Odam <span>&amp;</span> Phorn</div>
+    <p class="foot-text">សូមអរគុណយ៉ាងជ្រាលជ្រៅ<br>ចំពោះវត្តមាន និងពាក្យជូនពរដ៏ផ្អែមល្ហែម</p>
+    <div class="foot-small">Made by Dom · 2029</div>
+  </footer>
+</div>
+
+<!-- NAV DOCK -->
+<nav id="nav">
+  <button class="nav-btn active" data-target="home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5V20a2 2 0 0 1-2 2h-4v-7h-6v7H5a2 2 0 0 1-2-2z"/></svg>
+    <span>Home</span>
+  </button>
+  <button class="nav-btn" data-target="couple">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.5-7 10-7 10z"/></svg>
+    <span>Couple</span>
+  </button>
+  <button class="nav-btn" data-target="schedule">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="1"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+    <span>Schedule</span>
+  </button>
+  <button class="nav-btn" data-target="gallery">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+    <span>Gallery</span>
+  </button>
+  <button class="nav-btn" data-target="location">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 22s-7-7.75-7-13a7 7 0 0 1 14 0c0 5.25-7 13-7 13z"/><circle cx="12" cy="9" r="2.5"/></svg>
+    <span>Venue</span>
+  </button>
+  <button class="nav-btn" data-target="rsvp">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+    <span>RSVP</span>
+  </button>
+</nav>
+
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <button class="lb-close" id="lbClose" aria-label="Close">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+  </button>
+  <img id="lbImg" src="" alt="" />
+</div>
+
+<script>
+/* ============================================================
+   CONFIG
+   ============================================================ */
+const CONFIG = {
+  weddingDate: '2029-02-30T17:00:00+07:00',
+  wishesKey: 'wedding_wishes_v3',
+  introSafetyMs: 15000,
+};
+
+/* ============================================================
+   GUEST NAME FROM URL
+   ============================================================ */
+(function () {
+  const p = new URLSearchParams(location.search).get('guest');
+  if (p) {
+    document.getElementById('guestName').textContent =
+      decodeURIComponent(p).replace(/[-_]/g, ' ');
+  }
+})();
+
+/* ============================================================
+   ELEMENTS
+   ============================================================ */
+const enterScreen = document.getElementById('enterScreen');
+const enterBtn    = document.getElementById('enterBtn');
+const intro       = document.getElementById('intro');
+const introVideo  = document.getElementById('introVideo');
+const introSound  = document.getElementById('introSound');
+const skipIntro   = document.getElementById('skipIntro');
+const introProg   = document.getElementById('introProgress');
+const cover       = document.getElementById('cover');
+const site        = document.getElementById('site');
+const nav         = document.getElementById('nav');
+const music       = document.getElementById('bgMusic');
+const audioToggle = document.getElementById('audioToggle');
+const openBtn     = document.getElementById('openBtn');
+
+let muted        = true;    // background music muted?
+let introEnded   = false;
+let introReady   = false;
+let introStarted = false;
+let safetyTimer  = null;
+let soundOn      = true;    // ★ intro VIDEO sound ON by default
+let musicStarted = false;
+
+/* ---------- intro sound button state ---------- */
+function syncSoundBtn(){
+  introSound.classList.toggle('on', soundOn);
+  introSound.querySelector('span').textContent = soundOn ? 'Sound on' : 'Sound off';
+}
+syncSoundBtn();
+
+/* ============================================================
+   STEP 1 — TAP TO ENTER (unlocks audio → starts intro with sound)
+   ============================================================ */
+enterBtn.addEventListener('click', () => {
+  /* hide splash */
+  enterScreen.classList.add('gone');
+  setTimeout(() => {
+    if (enterScreen.parentNode) enterScreen.remove();
+  }, 950);
+
+  /* start intro WITH SOUND (user gesture unlocks audio) */
+  startIntroVideo();
+
+  /* safety net: if the video never actually plays, bail out */
+  clearTimeout(safetyTimer);
+  safetyTimer = setTimeout(() => {
+    if (!introReady) endIntro();
+  }, CONFIG.introSafetyMs);
+});
+
+/* ============================================================
+   STEP 2 — INTRO VIDEO (plays WITH SOUND from second 0)
+   ============================================================ */
+function startIntroVideo(){
+  if (introStarted || introEnded) return;
+  introStarted = true;
+
+  /* CRITICAL: unmute BEFORE play() — this is what makes the sound work */
+  introVideo.muted = false;
+  introVideo.volume = 0.85;
+  soundOn = true;
+  syncSoundBtn();
+
+  const p = introVideo.play();
+
+  if (p && typeof p.catch === 'function'){
+    p.catch(() => {
+      /* Very rare after a real gesture — but keep the fallback */
+      introVideo.muted = true;
+      introVideo.play().catch(() => endIntro());
+    });
+  }
+}
+
+/* Detect real "playing" state → cancel safety timer */
+function markIntroReady(){
+  if (introReady) return;
+  introReady = true;
+  clearTimeout(safetyTimer);
+}
+introVideo.addEventListener('playing', markIntroReady);
+introVideo.addEventListener('timeupdate', markIntroReady);
+introVideo.addEventListener('loadeddata', markIntroReady);
+
+/* Progress bar under intro */
+introVideo.addEventListener('timeupdate', () => {
+  if (introVideo.duration > 0) {
+    introProg.style.width =
+      Math.min(100, (introVideo.currentTime / introVideo.duration) * 100) + '%';
+  }
+});
+
+/* End conditions */
+introVideo.addEventListener('ended', endIntro);
+introVideo.addEventListener('error', endIntro);
+
+/* Tap video to (re)play if paused */
+introVideo.addEventListener('click', () => {
+  if (introVideo.paused) introVideo.play().catch(() => {});
+});
+
+/* Manual controls */
+skipIntro.addEventListener('click', endIntro);
+
+introSound.addEventListener('click', () => {
+  soundOn = !soundOn;
+  introVideo.muted = !soundOn;
+  introVideo.volume = soundOn ? 0.7 : 0;
+  if (soundOn) introVideo.play().catch(() => {});
+  syncSoundBtn();
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && !introEnded) endIntro();
+});
+
+/* ============================================================
+   STEP 3 — END INTRO → REVEAL COVER + START BG MUSIC
+   ============================================================ */
+function endIntro(){
+  if (introEnded) return;
+  introEnded = true;
+  clearTimeout(safetyTimer);
+
+  try { introVideo.pause(); } catch (e) {}
+
+  intro.classList.add('gone');
+  cover.classList.add('ready');
+
+  setTimeout(() => {
+    if (intro && intro.parentNode) intro.remove();
+  }, 950);
+
+  /* audio was already unlocked by the tap → music can start cleanly */
+  if (!musicStarted) playMusic();
+}
+
+/* ============================================================
+   BACKGROUND MUSIC
+   ============================================================ */
+function updateAudioIcon() {
+  audioToggle.classList.toggle('muted', muted);
+  audioToggle.querySelectorAll('.wave1, .wave2').forEach(el => {
+    el.style.opacity = muted ? '0' : '1';
+  });
+}
+
+async function playMusic() {
+  try {
+    music.volume = 0.45;
+    await music.play();
+    muted = false;
+    musicStarted = true;
+  } catch {
+    muted = true;
+    musicStarted = false;
+  }
+  updateAudioIcon();
+}
+
+audioToggle.addEventListener('click', () => {
+  if (muted) playMusic();
+  else { music.pause(); muted = true; updateAudioIcon(); }
+});
+
+updateAudioIcon();
+
+/* ============================================================
+   OPEN COVER → SITE
+   ============================================================ */
+openBtn.addEventListener('click', () => {
+  cover.classList.add('hide');
+  site.classList.add('show');
+  nav.classList.add('show');
+  audioToggle.classList.add('show');
+  document.body.classList.add('unlocked');
+  playMusic();
+  setTimeout(() => { cover.style.display = 'none'; }, 1000);
+});
+
+/* ============================================================
+   SCROLL PROGRESS
+   ============================================================ */
+const progressBar = document.getElementById('progress');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  progressBar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+}, { passive: true });
+
+/* ============================================================
+   COUNTDOWN
+   ============================================================ */
+(function () {
+  const target = new Date(CONFIG.weddingDate).getTime();
+  const $d = document.getElementById('cdD');
+  const $h = document.getElementById('cdH');
+  const $m = document.getElementById('cdM');
+  const $s = document.getElementById('cdS');
+
+  function tick() {
+    const diff = Math.max(0, target - Date.now());
+    $d.textContent = String(Math.floor(diff / 86400000)).padStart(2, '0');
+    $h.textContent = String(Math.floor((diff % 86400000) / 3600000)).padStart(2, '0');
+    $m.textContent = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+    $s.textContent = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+
+/* ============================================================
+   NAV SCROLL + SCROLLSPY
+   ============================================================ */
+document.querySelectorAll('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.getElementById(btn.dataset.target)
+      ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+const spy = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    document.querySelectorAll('.nav-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.target === e.target.id));
+  });
+}, { threshold: 0.35, rootMargin: '-20% 0px -35% 0px' });
+
+document.querySelectorAll('#site section[id]').forEach(s => spy.observe(s));
+
+/* ============================================================
+   REVEAL ON SCROLL
+   ============================================================ */
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('in');
+    revealObs.unobserve(e.target);
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+/* ============================================================
+   LIGHTBOX
+   ============================================================ */
+const lb = document.getElementById('lightbox');
+const lbImg = document.getElementById('lbImg');
+const lbClose = document.getElementById('lbClose');
+
+document.querySelectorAll('#galleryGrid img').forEach(img => {
+  img.addEventListener('click', () => {
+    lbImg.src = img.src;
+    lb.classList.add('open');
+    document.body.classList.remove('unlocked');
+  });
+});
+
+function closeLb() {
+  lb.classList.remove('open');
+  document.body.classList.add('unlocked');
+}
+lbClose.addEventListener('click', closeLb);
+lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && lb.classList.contains('open')) closeLb();
+});
+
+/* ============================================================
+   RSVP FORM
+   ============================================================ */
+document.getElementById('rsvpForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(e.target));
+  console.log('RSVP:', data);
+
+  e.target.innerHTML = `
+    <div style="text-align:center;padding:40px 0;">
+      <div style="width:56px;height:56px;margin:0 auto 20px;border:1px solid var(--accent);
+                  border-radius:50%;display:grid;place-items:center;color:var(--accent);">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 6L9 17l-5-5"/>
+        </svg>
+      </div>
+      <p style="font-family:var(--font-km-display);color:var(--accent-deep);font-size:16px;line-height:1.8;margin:0;">
+        សូមអរគុណ!
+      </p>
+      <p style="color:var(--ink-2);font-family:var(--font-km);font-size:13.5px;margin-top:10px;line-height:2;">
+        យើងខ្ញុំបានទទួលការបញ្ជាក់របស់អ្នក។
+      </p>
+    </div>`;
+});
+
+/* ============================================================
+   WISHES
+   ============================================================ */
+const wishList = document.getElementById('wishList');
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c =>
+    ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+}
+function initials(name) {
+  return String(name).trim().charAt(0).toUpperCase() || '?';
+}
+
+function loadWishes() {
+  let items = [];
+  try { items = JSON.parse(localStorage.getItem(CONFIG.wishesKey) || '[]'); } catch (e) {}
+
+  if (!items.length) {
+    wishList.innerHTML = '<div class="empty-msg">មិនទាន់មានពាក្យជូនព្រនៅឡើយទេ</div>';
+    return;
+  }
+
+  wishList.innerHTML = items.map(w => `
+    <div class="wish">
+      <div class="wish-avatar">${escapeHtml(initials(w.name))}</div>
+      <div class="wish-body">
+        <div class="wish-head">
+          <span class="wish-name">${escapeHtml(w.name)}</span>
+          <span class="wish-date">${escapeHtml(w.date)}</span>
+        </div>
+        <div class="wish-text">${escapeHtml(w.text)}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+document.getElementById('wishForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const f = new FormData(e.target);
+
+  let items = [];
+  try { items = JSON.parse(localStorage.getItem(CONFIG.wishesKey) || '[]'); } catch (err) {}
+
+  items.unshift({
+    name: f.get('name'),
+    text: f.get('text'),
+    date: new Date().toLocaleDateString('km-KH'),
+  });
+
+  localStorage.setItem(CONFIG.wishesKey, JSON.stringify(items));
+  e.target.reset();
+  loadWishes();
+});
+
+loadWishes();
+</script>
+</body>
+</html>
