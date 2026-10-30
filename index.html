@@ -39,12 +39,20 @@
 </div>
 
 <!-- ============================================================
-     INTRO VIDEO — will play WITH SOUND after tap
+     INTRO VIDEO — plays WITH SOUND after tap
      ============================================================ -->
 <section id="intro" aria-label="Intro video">
   <div class="intro-frame">
-    <video id="introVideo" playsinline muted preload="auto" poster="DP5.JPG">
+    <video id="introVideo"
+           playsinline
+           webkit-playsinline
+           x5-playsinline
+           muted
+           preload="metadata"
+           poster="DP5.JPG">
+      <source src="wedding.mp4" type="video/mp4" />
       <source src="Wedding1.mp4" type="video/mp4" />
+      <source src="wedding.webm" type="video/webm" />
     </video>
   </div>
 
@@ -84,7 +92,7 @@
 
 <div id="progress"></div>
 
-<audio id="bgMusic" loop preload="auto">
+<audio id="bgMusic" loop preload="metadata">
   <source src="https://media.leangna.online/audio/nisai.mp3" type="audio/mpeg" />
 </audio>
 
@@ -510,9 +518,11 @@
    CONFIG
    ============================================================ */
 const CONFIG = {
-  weddingDate: '2029-02-30T17:00:00+07:00',
+  /* Fixed real date — 2029-02-30 does NOT exist (Feb has max 29 days) */
+  weddingDate: '2029-03-02T17:00:00+07:00',
   wishesKey: 'wedding_wishes_v3',
-  introSafetyMs: 15000,
+  /* 60s allows slow mobile networks to download the video */
+  introSafetyMs: 60000,
 };
 
 /* ============================================================
@@ -543,15 +553,14 @@ const music       = document.getElementById('bgMusic');
 const audioToggle = document.getElementById('audioToggle');
 const openBtn     = document.getElementById('openBtn');
 
-let muted        = true;    // background music muted?
+let muted        = true;
 let introEnded   = false;
 let introReady   = false;
 let introStarted = false;
 let safetyTimer  = null;
-let soundOn      = true;    // ★ intro VIDEO sound ON by default
+let soundOn      = true;
 let musicStarted = false;
 
-/* ---------- intro sound button state ---------- */
 function syncSoundBtn(){
   introSound.classList.toggle('on', soundOn);
   introSound.querySelector('span').textContent = soundOn ? 'Sound on' : 'Sound off';
@@ -559,50 +568,82 @@ function syncSoundBtn(){
 syncSoundBtn();
 
 /* ============================================================
-   STEP 1 — TAP TO ENTER (unlocks audio → starts intro with sound)
+   VIDEO DIAGNOSTICS — logs to console for debugging on mobile
+   ============================================================ */
+introVideo.addEventListener('loadedmetadata', () => {
+  console.log('[intro] metadata loaded — duration:', introVideo.duration, 's');
+});
+introVideo.addEventListener('loadeddata', () => {
+  console.log('[intro] loadeddata — first frame ready');
+});
+introVideo.addEventListener('canplay', () => {
+  console.log('[intro] canplay — ready to play');
+});
+introVideo.addEventListener('playing', () => {
+  console.log('[intro] PLAYING ✅');
+});
+introVideo.addEventListener('waiting', () => {
+  console.warn('[intro] buffering (waiting)');
+});
+introVideo.addEventListener('stalled', () => {
+  console.warn('[intro] stalled — network slow');
+});
+introVideo.addEventListener('error', () => {
+  const e = introVideo.error;
+  console.error('[intro] ERROR', {
+    code: e ? e.code : '?',
+    message: e ? e.message : '?',
+    src: introVideo.currentSrc,
+    readyState: introVideo.readyState,
+    networkState: introVideo.networkState,
+  });
+});
+
+/* ============================================================
+   TAP TO ENTER → start intro WITH SOUND
    ============================================================ */
 enterBtn.addEventListener('click', () => {
-  /* hide splash */
   enterScreen.classList.add('gone');
   setTimeout(() => {
     if (enterScreen.parentNode) enterScreen.remove();
   }, 950);
 
-  /* start intro WITH SOUND (user gesture unlocks audio) */
   startIntroVideo();
 
-  /* safety net: if the video never actually plays, bail out */
   clearTimeout(safetyTimer);
   safetyTimer = setTimeout(() => {
-    if (!introReady) endIntro();
+    if (!introReady) {
+      console.warn('[intro] safety timeout reached — ending intro');
+      endIntro();
+    }
   }, CONFIG.introSafetyMs);
 });
 
 /* ============================================================
-   STEP 2 — INTRO VIDEO (plays WITH SOUND from second 0)
+   INTRO VIDEO
    ============================================================ */
 function startIntroVideo(){
   if (introStarted || introEnded) return;
   introStarted = true;
 
-  /* CRITICAL: unmute BEFORE play() — this is what makes the sound work */
   introVideo.muted = false;
   introVideo.volume = 0.85;
   soundOn = true;
   syncSoundBtn();
 
   const p = introVideo.play();
-
   if (p && typeof p.catch === 'function'){
-    p.catch(() => {
-      /* Very rare after a real gesture — but keep the fallback */
+    p.then(() => {
+      console.log('[intro] play() resolved — sound on');
+    }).catch((err) => {
+      console.warn('[intro] play() rejected:', err && err.name);
+      /* Fall back to muted playback if sound was blocked */
       introVideo.muted = true;
       introVideo.play().catch(() => endIntro());
     });
   }
 }
 
-/* Detect real "playing" state → cancel safety timer */
 function markIntroReady(){
   if (introReady) return;
   introReady = true;
@@ -612,7 +653,6 @@ introVideo.addEventListener('playing', markIntroReady);
 introVideo.addEventListener('timeupdate', markIntroReady);
 introVideo.addEventListener('loadeddata', markIntroReady);
 
-/* Progress bar under intro */
 introVideo.addEventListener('timeupdate', () => {
   if (introVideo.duration > 0) {
     introProg.style.width =
@@ -620,16 +660,13 @@ introVideo.addEventListener('timeupdate', () => {
   }
 });
 
-/* End conditions */
 introVideo.addEventListener('ended', endIntro);
 introVideo.addEventListener('error', endIntro);
 
-/* Tap video to (re)play if paused */
 introVideo.addEventListener('click', () => {
   if (introVideo.paused) introVideo.play().catch(() => {});
 });
 
-/* Manual controls */
 skipIntro.addEventListener('click', endIntro);
 
 introSound.addEventListener('click', () => {
@@ -644,9 +681,6 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && !introEnded) endIntro();
 });
 
-/* ============================================================
-   STEP 3 — END INTRO → REVEAL COVER + START BG MUSIC
-   ============================================================ */
 function endIntro(){
   if (introEnded) return;
   introEnded = true;
@@ -661,7 +695,6 @@ function endIntro(){
     if (intro && intro.parentNode) intro.remove();
   }, 950);
 
-  /* audio was already unlocked by the tap → music can start cleanly */
   if (!musicStarted) playMusic();
 }
 
@@ -726,6 +759,11 @@ window.addEventListener('scroll', () => {
   const $h = document.getElementById('cdH');
   const $m = document.getElementById('cdM');
   const $s = document.getElementById('cdS');
+
+  if (isNaN(target)) {
+    console.error('[countdown] Invalid weddingDate:', CONFIG.weddingDate);
+    return;
+  }
 
   function tick() {
     const diff = Math.max(0, target - Date.now());
